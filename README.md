@@ -4,7 +4,7 @@
 
 <br/>
 
-<h3 style="color:#FF4FC3">Learning to build intelligence, one model at a time.</h3>
+<h3>Learning to build intelligence, one model at a time.</h3>
 
 </div>
 
@@ -40,7 +40,7 @@ Right now, I'm building my foundations: learning deeply, practicing consistently
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=python,c,git,github,vscode&theme=dark" alt="Python, C, Git, GitHub, VS Code"/>
+<img src="https://skillicons.dev/icons?i=python,c,git,github,vscode&theme=dark" alt="Python, C, Git, GitHub, and VS Code"/>
 
 </div>
 
@@ -70,21 +70,9 @@ More projects will appear here as I build, test, and ship them.
 
 <img src="https://ghchart.rshah.org/FF4FC3/Deekshitha-089" alt="Neon pink GitHub contribution heatmap" width="100%"/>
 
-<br/>
-
-<img src="https://raw.githubusercontent.com/Deekshitha-089/Deekshitha-089/output/github-contribution-grid-snake.svg" alt="Neon pink contribution snake" width="100%"/>
-
 </div>
 
 ---
-
-## 💗 05 // NEXT HORIZON
-
-- Strengthen programming, DSA, and mathematical foundations.
-- Learn machine learning from first principles.
-- Turn learning into useful, well-documented projects.
-- Explore beginner-friendly open-source contributions.
-- Become an engineer who can understand a problem and build a thoughtful solution.
 
 <div align="center">
 
