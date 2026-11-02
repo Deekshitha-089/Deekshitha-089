@@ -1,18 +1,74 @@
-# Set up your Neural Bloom GitHub profile
+# 💗 Neural Bloom // 089 — Setup Guide
 
-1. Create a **public** GitHub repository named exactly `Deekshitha-089`.
-2. Upload the contents of this folder into the repository root (including `.github`).
-3. Commit the files to the default branch.
-4. In the repository's **Actions** tab, enable workflows if prompted.
-5. Run **Generate pink contribution snake** once.
+## 1. Publish your profile
 
-Your profile README will appear at: https://github.com/Deekshitha-089
+1. Make sure your repository is **public**.
+2. The repository name must be exactly `Deekshitha-089`.
+3. Place `README.md` at the root of the repository.
+4. Keep the `assets` folder and `.github` folder in the repository.
+5. Commit and push your changes to the `main` branch.
 
-## Files
-- `README.md` — your profile content and pink-themed dynamic cards.
-- `assets/header.svg` — custom neon pink banner.
-- `assets/ai-brain-neon.png` — the AI brain artwork.
-- `.github/workflows/generate-snake.yml` — contribution snake workflow.
+Your profile README will appear on your GitHub profile page.
 
-## Notes
-GitHub's native contribution calendar is shown on your profile automatically. The stats, activity graph, and snake are dynamic/external images and may take time to load. The snake workflow publishes its image to the `output` branch after you run it.
+## 2. Neon pink contribution heatmap
+
+The README uses the following external service to display your GitHub contribution activity in neon pink:
+
+`https://ghchart.rshah.org/FF4FC3/Deekshitha-089`
+
+The heatmap reflects your actual GitHub contributions.
+
+If the image does not load, the external service may be temporarily unavailable.
+
+## 3. Generate the pink contribution snake
+
+The repository includes a GitHub Actions workflow that generates a pink contribution snake.
+
+### Enable workflow permissions
+
+1. Open your repository on GitHub.
+2. Go to **Settings → Actions → General**.
+3. Scroll down to **Workflow permissions**.
+4. Select **Read and write permissions**.
+5. Click **Save**.
+
+### Run the workflow
+
+1. Open the **Actions** tab.
+2. Select **Generate pink contribution snake**.
+3. Click **Run workflow**.
+4. Select the `main` branch.
+5. Click **Run workflow** again.
+
+Wait for the workflow to finish successfully.
+
+The generated snake will be published to the `output` branch.
+
+## 4. Troubleshooting
+
+### The snake is not appearing
+
+- Check that the workflow completed successfully.
+- Make sure workflow permissions allow read and write access.
+- Confirm that the `output` branch exists.
+- Refresh your profile README after the workflow completes.
+
+### The pink heatmap is not appearing
+
+The heatmap is provided by an external image service. If the service is unavailable, the image may not load.
+
+### The profile README is not appearing
+
+Confirm that:
+
+- The repository is public.
+- The repository name matches your GitHub username exactly.
+- `README.md` is located at the repository root.
+
+---
+
+<div align="center">
+
+Made with 💗 and curiosity.
+
+</div>
