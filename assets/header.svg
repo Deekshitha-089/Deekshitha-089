@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+<title id="title">Deekshitha — AI/ML student</title>
+<desc id="desc">A custom dark neon pink profile banner with Deekshitha's name, AI and computational intelligence focus, and a glowing neural brain with circuit connections.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#09020B"/><stop offset=".54" stop-color="#16051B"/><stop offset="1" stop-color="#08020D"/>
+  </linearGradient>
+  <linearGradient id="pink" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFB8F0"/><stop offset=".48" stop-color="#FF4FC3"/><stop offset="1" stop-color="#D946EF"/>
+  </linearGradient>
+  <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+    <path d="M42 0H0V42" fill="none" stroke="#FF4FC3" stroke-opacity=".07" stroke-width="1"/>
+    <circle cx="0" cy="0" r="1.5" fill="#FF4FC3" fill-opacity=".18"/>
+  </pattern>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="18"/>
+  </filter>
+</defs>
+<rect width="1200" height="360" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1198" height="358" rx="17" fill="none" stroke="#FF4FC3" stroke-opacity=".42" stroke-width="2"/>
+<rect width="1200" height="360" rx="18" fill="url(#grid)"/>
+<path d="M0 292C220 244 344 333 560 279S878 223 1200 286V360H0Z" fill="#FF4FC3" fill-opacity=".035"/>
+<path d="M0 301C220 253 344 342 560 288S878 232 1200 295" fill="none" stroke="#FF4FC3" stroke-opacity=".2"/>
+
+<!-- Left identity panel -->
+<g transform="translate(70 64)">
+  <rect x="0" y="0" width="114" height="26" rx="13" fill="#FF4FC3" fill-opacity=".10" stroke="#FF4FC3" stroke-opacity=".62"/>
+  <circle cx="17" cy="13" r="4" fill="#FF4FC3" filter="url(#glow)"/>
+  <text x="29" y="17" fill="#FFC5F0" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700" letter-spacing="1.7">ONLINE</text>
+  <text x="0" y="93" fill="#FFF4FC" font-family="Arial,Helvetica,sans-serif" font-size="66" font-weight="800" letter-spacing="1.3">DEEKSHITHA</text>
+  <rect x="0" y="111" width="490" height="3" rx="1.5" fill="url(#pink)" filter="url(#glow)"/>
+  <text x="0" y="151" fill="#FF4FC3" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="700" letter-spacing="2.3">AI/ML STUDENT</text>
+  <text x="0" y="184" fill="#F4C8E9" font-family="Arial,Helvetica,sans-serif" font-size="17" letter-spacing="1.05">B.TECH • AI FOR COMPUTATIONAL INTELLIGENCE</text>
+  <g transform="translate(0 220)" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700" letter-spacing=".9">
+    <rect width="116" height="34" rx="7" fill="#19091E" stroke="#FF4FC3" stroke-opacity=".55"/>
+    <text x="58" y="22" fill="#FFD2F2" text-anchor="middle">PYTHON</text>
+    <rect x="129" width="160" height="34" rx="7" fill="#19091E" stroke="#FF4FC3" stroke-opacity=".55"/>
+    <text x="209" y="22" fill="#FFD2F2" text-anchor="middle">MACHINE LEARNING</text>
+    <rect x="302" width="142" height="34" rx="7" fill="#19091E" stroke="#FF4FC3" stroke-opacity=".55"/>
+    <text x="373" y="22" fill="#FFD2F2" text-anchor="middle">BUILDING</text>
+  </g>
+</g>
+
+<!-- Right-side neural brain and circuit motif, unique to this profile -->
+<g transform="translate(785 39)">
+  <circle cx="169" cy="141" r="121" fill="#FF4FC3" fill-opacity=".025" stroke="#FF4FC3" stroke-opacity=".14"/>
+  <circle cx="169" cy="141" r="92" fill="none" stroke="#FF4FC3" stroke-opacity=".24" stroke-dasharray="4 9"/>
+  <circle cx="169" cy="141" r="62" fill="#100615" stroke="#FF4FC3" stroke-opacity=".40"/>
+  <circle cx="169" cy="141" r="58" fill="#FF4FC3" fill-opacity=".04" filter="url(#softGlow)"/>
+  <!-- brain outline -->
+  <g fill="#FF4FC3" fill-opacity=".10" stroke="#FF4FC3" stroke-width="3" stroke-linejoin="round" filter="url(#glow)">
+    <path d="M169 96
+      C154 77 132 86 128 102
+      C108 100 100 119 107 132
+      C91 143 98 163 112 168
+      C111 187 131 196 146 184
+      C154 196 165 194 169 186Z"/>
+    <path d="M169 96
+      C184 77 206 86 210 102
+      C230 100 240 119 233 132
+      C249 143 242 163 228 168
+      C229 187 209 196 194 184
+      C186 196 175 194 169 186Z"/>
+  </g>
+  <path d="M169 98V186" stroke="#FFD7F3" stroke-width="2.4" stroke-linecap="round"/>
+  <g stroke="#FFD0F1" stroke-width="2.1" fill="none" stroke-linecap="round">
+    <path d="M144 112C131 111 128 124 137 131"/>
+    <path d="M125 143C139 137 146 149 138 159"/>
+    <path d="M151 165C139 161 136 174 146 180"/>
+    <path d="M194 112C207 111 210 124 201 131"/>
+    <path d="M213 143C199 137 192 149 200 159"/>
+    <path d="M187 165C199 161 202 174 192 180"/>
+  </g>
+  <!-- Neural pathways -->
+  <g stroke="#FF4FC3" stroke-opacity=".72" fill="none" stroke-width="1.5">
+    <path d="M45 65H88L119 100"/>
+    <path d="M291 77H251L219 103"/>
+    <path d="M47 226H89L124 180"/>
+    <path d="M295 219H252L215 177"/>
+    <path d="M169 7V49"/>
+    <path d="M169 233V274"/>
+  </g>
+  <g fill="#FF4FC3" filter="url(#glow)">
+    <circle cx="42" cy="65" r="5"/><circle cx="296" cy="77" r="5"/>
+    <circle cx="43" cy="226" r="5"/><circle cx="300" cy="219" r="5"/>
+    <circle cx="169" cy="2" r="5"/><circle cx="169" cy="279" r="5"/>
+  </g>
+  <g font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="700" letter-spacing="1.2" fill="#EFA8DB">
+    <text x="0" y="49">LEARN</text>
+    <text x="283" y="60">CREATE</text>
+    <text x="2" y="249">EXPLORE</text>
+    <text x="275" y="242">GROW</text>
+  </g>
+</g>
+<g transform="translate(1027 300)" font-family="monospace" font-size="11" fill="#FF79D4" opacity=".9">
+  <text x="0" y="0">STATUS: LEARNING</text>
+  <text x="0" y="18">FOCUS: AI / ML</text>
+</g>
+</svg>
