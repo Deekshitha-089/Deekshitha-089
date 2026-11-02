@@ -2,11 +2,9 @@
 
 <img src="assets/header.svg" width="100%" alt="Deekshitha — AI for Computational Intelligence — neon pink neural brain banner"/>
 
-### `NEURAL BLOOM // 089`
 
 **Learning to build intelligence, one model at a time.**
 
-<sub>BLACK × HOT PINK × NEON FUCHSIA — NO WHITE THEME</sub>
 
 [![GitHub](https://img.shields.io/badge/GITHUB-Deekshitha--089-FF4FC3?style=for-the-badge&logo=github&logoColor=white&labelColor=100714)](https://github.com/Deekshitha-089)
 [![Profile views](https://komarev.com/ghpvc/?username=Deekshitha-089&style=for-the-badge&color=FF4FC3&labelColor=100714&label=VISITORS)](https://github.com/Deekshitha-089)
