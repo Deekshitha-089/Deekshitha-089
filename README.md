@@ -62,13 +62,13 @@ More projects will appear here as I build, test, and ship them.
 
 ---
 
-## 💗 04 // THE PINK SIGNAL
+## 💗 04 // THE SIGNAL
+
+## `> commit_activity`
 
 <div align="center">
 
-### My GitHub contributions — in neon pink
-
-<img src="https://ghchart.rshah.org/FF4FC3/Deekshitha-089" alt="Neon pink GitHub contribution heatmap" width="100%"/>
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=Deekshitha-089&bg_color=0D0014&color=FF4FC3&line=FF4FC3&point=FFFFFF&area=true&area_color=FF4FC3&hide_border=true" width="100%" alt="GitHub commit activity graph"/>
 
 </div>
 
