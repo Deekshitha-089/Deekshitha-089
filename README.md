@@ -48,35 +48,47 @@ Right now, I'm building my foundations: learning deeply, practicing consistently
 
 ## 💗 03 // THE LAB
 
-### MINDVAULT
+### 🧠 MINDVAULT
 
 **A coding-learning companion concept I'm exploring**
 
 I want to create a space that captures more than a solved problem: the question, my approach, the errors I encountered, and the patterns I should revisit.
 
-The goal is to make learning from mistakes visible and useful.
+- Track coding questions, solutions, and errors.
+- Understand recurring mistakes.
+- Visualize problem-solving patterns.
+- Improve through reflection and practice.
 
-`STATUS: IN PROGRESS // EVOLVING CONCEPT`
-
-More projects will appear here as I build, test, and ship them.
+*Currently exploring and building.*
 
 ---
 
-## 💗 04 // THE SIGNAL
-
-## `> commit_activity`
+## 💗 04 // THE COMMIT CURVE
 
 <div align="center">
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Deekshitha-089&bg_color=0D0014&color=FF4FC3&line=FF4FC3&point=FFFFFF&area=true&area_color=FF4FC3&hide_border=true" width="100%" alt="GitHub commit activity graph"/>
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=Deekshitha-089&bg_color=0D0014&color=FF4FC3&line=FF4FC3&point=FFFFFF&area=true&area_color=FF4FC3&hide_border=true" width="100%" alt="GitHub commit activity line graph"/>
 
 </div>
 
 ---
 
+## 💗 05 // THE DIRECTION
+
+- Become a skilled AI/ML Engineer.
+- Strengthen Python and DSA fundamentals.
+- Build meaningful projects.
+- Contribute to open-source.
+- Keep learning beyond the classroom.
+
+---
+
 <div align="center">
 
-### Still learning. Always building. 🌸
+<img src="https://img.shields.io/badge/Still%20learning-FF4FC3?style=flat-square&logoColor=black"/>
+<img src="https://img.shields.io/badge/Always%20building-FF4FC3?style=flat-square&logoColor=black"/>
+
+<br/>
 
 <sub>Curiosity, compiled — one commit at a time.</sub>
 
