@@ -67,7 +67,7 @@ I want to create a space that captures more than a solved problem: the question,
 
 <div align="center">
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Deekshitha-089&bg_color=0D0014&color=FF4FC3&line=FF4FC3&point=FFFFFF&area=true&area_color=FF4FC3&hide_border=true" width="100%" alt="GitHub commit activity line graph"/>
+<img src="assets/commit-activity.svg" width="100%" alt="Dynamic GitHub contribution line graph"/>
 
 </div>
 
