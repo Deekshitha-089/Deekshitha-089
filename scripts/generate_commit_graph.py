@@ -1,8 +1,10 @@
+
 import json
 import os
 import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 USERNAME = os.environ["GITHUB_USERNAME"]
 TOKEN = os.environ["GITHUB_TOKEN"]
@@ -57,9 +59,12 @@ def fetch_contribution_data():
     if "errors" in result:
         raise RuntimeError(result["errors"])
 
-    calendar = result["data"]["user"]["contributionsCollection"][
-        "contributionCalendar"
-    ]
+    user = result.get("data", {}).get("user")
+
+    if user is None:
+        raise RuntimeError("GitHub user was not found.")
+
+    calendar = user["contributionsCollection"]["contributionCalendar"]
 
     contributions = {}
 
@@ -71,103 +76,296 @@ def fetch_contribution_data():
 
 
 def generate_svg(contributions):
-    width = 1000
-    height = 320
+    width = 1200
+    height = 440
 
-    left = 55
-    right = 25
-    top = 45
-    bottom = 55
+    left = 75
+    right = 35
+    top = 95
+    bottom = 75
 
     graph_width = width - left - right
     graph_height = height - top - bottom
 
+    dates = []
     counts = []
 
     current = START_DATE
 
     while current <= END_DATE:
+        dates.append(current)
         counts.append(contributions.get(current.isoformat(), 0))
         current += timedelta(days=1)
 
-    max_count = max(counts) if counts else 1
-    max_count = max(max_count, 1)
+    total = sum(counts)
+    peak = max(counts) if counts else 0
+
+    # Dynamic Y-axis scaling
+    max_count = max(5, peak)
+    step = max(1, (max_count + 4) // 5)
+    axis_max = step * 5
 
     points = []
 
     for index, count in enumerate(counts):
-        x = left + (index / max(len(counts) - 1, 1)) * graph_width
-        y = top + graph_height - (count / max_count) * graph_height
-        points.append(f"{x:.2f},{y:.2f}")
+        x = left + (
+            index / max(len(counts) - 1, 1)
+        ) * graph_width
 
-    polyline_points = " ".join(points)
+        y = top + graph_height - (
+            count / axis_max
+        ) * graph_height
+
+        points.append((x, y))
+
+    line_points = " ".join(
+        f"{x:.2f},{y:.2f}" for x, y in points
+    )
 
     area_points = (
         f"{left},{top + graph_height} "
-        + polyline_points
+        + line_points
         + f" {left + graph_width},{top + graph_height}"
     )
 
-    total = sum(counts)
+    # Horizontal gridlines and Y-axis labels
+    grid = []
 
-    svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
-    width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+    for value in range(0, axis_max + 1, step):
+        y = top + graph_height - (
+            value / axis_max
+        ) * graph_height
+
+        grid.append(f"""
+        <line
+            x1="{left}"
+            y1="{y:.2f}"
+            x2="{left + graph_width}"
+            y2="{y:.2f}"
+            stroke="#49203F"
+            stroke-width="1"
+            opacity="0.65"
+        />
+
+        <text
+            x="{left - 18}"
+            y="{y + 4:.2f}"
+            text-anchor="end"
+            fill="#C58BB9"
+            font-family="monospace"
+            font-size="12"
+        >{value}</text>
+        """)
+
+    # Month labels
+    month_labels = []
+
+    previous_month = None
+
+    for index, current_date in enumerate(dates):
+        if current_date.month != previous_month:
+            x = points[index][0]
+
+            month_labels.append(f"""
+            <text
+                x="{x:.2f}"
+                y="{height - 32}"
+                text-anchor="middle"
+                fill="#E6A5D5"
+                font-family="monospace"
+                font-size="12"
+            >{current_date.strftime("%b")}</text>
+            """)
+
+            previous_month = current_date.month
+
+    # Daily glowing points with hover tooltips
+    markers = []
+
+    for index, (x, y) in enumerate(points):
+        count = counts[index]
+        formatted_date = dates[index].strftime("%d %b %Y")
+
+        tooltip = escape(
+            f"{formatted_date}: {count} contributions"
+        )
+
+        markers.append(f"""
+        <circle
+            cx="{x:.2f}"
+            cy="{y:.2f}"
+            r="2.5"
+            fill="#FF4FC3"
+            opacity="0.8"
+        >
+            <title>{tooltip}</title>
+        </circle>
+        """)
+
+    first_date = START_DATE.strftime("%b %Y")
+    last_date = END_DATE.strftime("%b %Y")
+
+    svg = f"""<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="{width}"
+    height="{height}"
+    viewBox="0 0 {width} {height}"
+    role="img"
+    aria-label="Daily GitHub contribution activity graph"
+    >
+
     <defs>
-      <linearGradient id="pinkArea" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#FF4FC3" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="#FF4FC3" stop-opacity="0.02"/>
-      </linearGradient>
+
+        <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#100018"/>
+            <stop offset="100%" stop-color="#08000F"/>
+        </linearGradient>
+
+        <linearGradient id="pinkArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FF4FC3" stop-opacity="0.38"/>
+            <stop offset="65%" stop-color="#FF4FC3" stop-opacity="0.10"/>
+            <stop offset="100%" stop-color="#FF4FC3" stop-opacity="0.01"/>
+        </linearGradient>
+
+        <linearGradient id="neonLine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#FF8ADD"/>
+            <stop offset="50%" stop-color="#FF35BB"/>
+            <stop offset="100%" stop-color="#FF8ADD"/>
+        </linearGradient>
+
+        <filter id="pinkGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="7" result="blur"/>
+            <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3"/>
+        </filter>
+
     </defs>
 
-    <rect width="100%" height="100%" fill="#0D0014" rx="18"/>
+    <rect
+        width="{width}"
+        height="{height}"
+        rx="20"
+        fill="url(#background)"
+    />
 
-    <text x="{left}" y="28"
-      fill="#FF4FC3"
-      font-family="monospace"
-      font-size="18"
-      font-weight="bold">
-      COMMIT ACTIVITY
-    </text>
+    <!-- Heading -->
 
-    <text x="{width - right}" y="28"
-      text-anchor="end"
-      fill="#FFFFFF"
-      font-family="monospace"
-      font-size="13">
-      {total} contributions in the last year
-    </text>
+    <text
+        x="{left}"
+        y="42"
+        fill="#FF4FC3"
+        font-family="monospace"
+        font-size="22"
+        font-weight="bold"
+        letter-spacing="2"
+    >COMMIT ACTIVITY</text>
 
-    <polygon points="{area_points}" fill="url(#pinkArea)"/>
+    <text
+        x="{left}"
+        y="65"
+        fill="#B58AAE"
+        font-family="monospace"
+        font-size="11"
+        letter-spacing="2"
+    >DAILY GITHUB CONTRIBUTIONS • LAST 365 DAYS</text>
 
-    <polyline points="{polyline_points}"
-      fill="none"
-      stroke="#FF4FC3"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"/>
+    <text
+        x="{width - right}"
+        y="42"
+        text-anchor="end"
+        fill="#FFFFFF"
+        font-family="monospace"
+        font-size="20"
+        font-weight="bold"
+    >{total:,}</text>
 
-    <text x="{left}" y="{height - 20}"
-      fill="#FF4FC3"
-      font-family="monospace"
-      font-size="12">
-      {START_DATE.strftime("%b %Y")}
-    </text>
+    <text
+        x="{width - right}"
+        y="63"
+        text-anchor="end"
+        fill="#B58AAE"
+        font-family="monospace"
+        font-size="11"
+    >TOTAL CONTRIBUTIONS</text>
 
-    <text x="{width - right}" y="{height - 20}"
-      text-anchor="end"
-      fill="#FF4FC3"
-      font-family="monospace"
-      font-size="12">
-      {END_DATE.strftime("%b %Y")}
-    </text>
+    <!-- Grid -->
+
+    {''.join(grid)}
+
+    <!-- Gradient area -->
+
+    <polygon
+        points="{area_points}"
+        fill="url(#pinkArea)"
+    />
+
+    <!-- Blurred neon glow -->
+
+    <polyline
+        points="{line_points}"
+        fill="none"
+        stroke="#FF4FC3"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.65"
+        filter="url(#softGlow)"
+    />
+
+    <!-- Main neon line -->
+
+    <polyline
+        points="{line_points}"
+        fill="none"
+        stroke="url(#neonLine)"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        filter="url(#pinkGlow)"
+    />
+
+    <!-- Daily points -->
+
+    {''.join(markers)}
+
+    <!-- X-axis -->
+
+    {''.join(month_labels)}
+
+    <text
+        x="{left}"
+        y="{height - 10}"
+        fill="#9E7297"
+        font-family="monospace"
+        font-size="10"
+    >{first_date}</text>
+
+    <text
+        x="{width - right}"
+        y="{height - 10}"
+        text-anchor="end"
+        fill="#9E7297"
+        font-family="monospace"
+        font-size="10"
+    >{last_date}</text>
+
     </svg>
     """
 
     output_path = Path("assets/commit-activity.svg")
     output_path.parent.mkdir(parents=True, exist_ok=True)
+
     output_path.write_text(svg, encoding="utf-8")
 
     print(f"Generated graph: {output_path}")
+    print(f"Total contributions: {total}")
+    print(f"Peak daily contributions: {peak}")
 
 
 def main():
