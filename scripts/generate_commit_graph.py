@@ -62,7 +62,7 @@ def fetch_contribution_data():
     user = result.get("data", {}).get("user")
 
     if user is None:
-        raise RuntimeError("GitHub user was not found.")
+        raise RuntimeError(f"GitHub user '{USERNAME}' was not found.")
 
     calendar = user["contributionsCollection"]["contributionCalendar"]
 
@@ -75,7 +75,41 @@ def fetch_contribution_data():
     return contributions
 
 
-def generate_svg(contributions):
+def prepare_daily_data(contributions):
+    dates = []
+    counts = []
+
+    current = START_DATE
+
+    while current <= END_DATE:
+        dates.append(current)
+        counts.append(contributions.get(current.isoformat(), 0))
+        current += timedelta(days=1)
+
+    return dates, counts
+
+
+def generate_json(dates, counts):
+    output_path = Path("docs/contributions.json")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    daily_data = [
+        {
+            "date": current_date.isoformat(),
+            "count": count
+        }
+        for current_date, count in zip(dates, counts)
+    ]
+
+    output_path.write_text(
+        json.dumps(daily_data, indent=2),
+        encoding="utf-8"
+    )
+
+    print(f"Generated interactive data: {output_path}")
+
+
+def generate_svg(dates, counts):
     width = 1200
     height = 440
 
@@ -87,20 +121,9 @@ def generate_svg(contributions):
     graph_width = width - left - right
     graph_height = height - top - bottom
 
-    dates = []
-    counts = []
-
-    current = START_DATE
-
-    while current <= END_DATE:
-        dates.append(current)
-        counts.append(contributions.get(current.isoformat(), 0))
-        current += timedelta(days=1)
-
     total = sum(counts)
     peak = max(counts) if counts else 0
 
-    # Dynamic Y-axis scaling
     max_count = max(5, peak)
     step = max(1, (max_count + 4) // 5)
     axis_max = step * 5
@@ -128,7 +151,6 @@ def generate_svg(contributions):
         + f" {left + graph_width},{top + graph_height}"
     )
 
-    # Horizontal gridlines and Y-axis labels
     grid = []
 
     for value in range(0, axis_max + 1, step):
@@ -157,9 +179,7 @@ def generate_svg(contributions):
         >{value}</text>
         """)
 
-    # Month labels
     month_labels = []
-
     previous_month = None
 
     for index, current_date in enumerate(dates):
@@ -179,7 +199,6 @@ def generate_svg(contributions):
 
             previous_month = current_date.month
 
-    # Daily glowing points with hover tooltips
     markers = []
 
     for index, (x, y) in enumerate(points):
@@ -202,8 +221,8 @@ def generate_svg(contributions):
         </circle>
         """)
 
-    first_date = START_DATE.strftime("%b %Y")
-    last_date = END_DATE.strftime("%b %Y")
+    first_date = dates[0].strftime("%b %Y")
+    last_date = dates[-1].strftime("%b %Y")
 
     svg = f"""<svg
     xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +234,6 @@ def generate_svg(contributions):
     >
 
     <defs>
-
         <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#100018"/>
             <stop offset="100%" stop-color="#08000F"/>
@@ -240,120 +258,81 @@ def generate_svg(contributions):
                 <feMergeNode in="SourceGraphic"/>
             </feMerge>
         </filter>
-
-        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3"/>
-        </filter>
-
     </defs>
 
-    <rect
-        width="{width}"
-        height="{height}"
-        rx="20"
-        fill="url(#background)"
-    />
+    <rect width="{width}" height="{height}" rx="20"
+        fill="url(#background)"/>
 
-    <!-- Heading -->
-
-    <text
-        x="{left}"
-        y="42"
+    <text x="{left}" y="42"
         fill="#FF4FC3"
         font-family="monospace"
         font-size="22"
         font-weight="bold"
-        letter-spacing="2"
-    >COMMIT ACTIVITY</text>
+        letter-spacing="2">
+        CONTRIBUTION ACTIVITY
+    </text>
 
-    <text
-        x="{left}"
-        y="65"
+    <text x="{left}" y="65"
         fill="#B58AAE"
         font-family="monospace"
-        font-size="11"
-        letter-spacing="2"
-    >DAILY GITHUB CONTRIBUTIONS • LAST 365 DAYS</text>
+        font-size="11">
+        DAILY GITHUB CONTRIBUTIONS • LAST 365 DAYS
+    </text>
 
-    <text
-        x="{width - right}"
-        y="42"
+    <text x="{width - right}" y="42"
         text-anchor="end"
         fill="#FFFFFF"
         font-family="monospace"
         font-size="20"
-        font-weight="bold"
-    >{total:,}</text>
+        font-weight="bold">
+        {total:,}
+    </text>
 
-    <text
-        x="{width - right}"
-        y="63"
+    <text x="{width - right}" y="63"
         text-anchor="end"
         fill="#B58AAE"
         font-family="monospace"
-        font-size="11"
-    >TOTAL CONTRIBUTIONS</text>
-
-    <!-- Grid -->
+        font-size="11">
+        TOTAL CONTRIBUTIONS
+    </text>
 
     {''.join(grid)}
 
-    <!-- Gradient area -->
+    <polygon points="{area_points}" fill="url(#pinkArea)"/>
 
-    <polygon
-        points="{area_points}"
-        fill="url(#pinkArea)"
-    />
-
-    <!-- Blurred neon glow -->
-
-    <polyline
-        points="{line_points}"
+    <polyline points="{line_points}"
         fill="none"
         stroke="#FF4FC3"
         stroke-width="10"
         stroke-linecap="round"
         stroke-linejoin="round"
         opacity="0.65"
-        filter="url(#softGlow)"
-    />
+        filter="url(#pinkGlow)"/>
 
-    <!-- Main neon line -->
-
-    <polyline
-        points="{line_points}"
+    <polyline points="{line_points}"
         fill="none"
         stroke="url(#neonLine)"
         stroke-width="3"
         stroke-linecap="round"
-        stroke-linejoin="round"
-        filter="url(#pinkGlow)"
-    />
-
-    <!-- Daily points -->
+        stroke-linejoin="round"/>
 
     {''.join(markers)}
-
-    <!-- X-axis -->
-
     {''.join(month_labels)}
 
-    <text
-        x="{left}"
-        y="{height - 10}"
+    <text x="{left}" y="{height - 10}"
         fill="#9E7297"
         font-family="monospace"
-        font-size="10"
-    >{first_date}</text>
+        font-size="10">
+        {first_date}
+    </text>
 
-    <text
-        x="{width - right}"
-        y="{height - 10}"
+    <text x="{width - right}" y="{height - 10}"
         text-anchor="end"
         fill="#9E7297"
         font-family="monospace"
-        font-size="10"
-    >{last_date}</text>
+        font-size="10">
+        {last_date}
+    </text>
 
     </svg>
     """
@@ -363,14 +342,18 @@ def generate_svg(contributions):
 
     output_path.write_text(svg, encoding="utf-8")
 
-    print(f"Generated graph: {output_path}")
+    print(f"Generated SVG preview: {output_path}")
     print(f"Total contributions: {total}")
     print(f"Peak daily contributions: {peak}")
 
 
 def main():
     contributions = fetch_contribution_data()
-    generate_svg(contributions)
+
+    dates, counts = prepare_daily_data(contributions)
+
+    generate_json(dates, counts)
+    generate_svg(dates, counts)
 
 
 if __name__ == "__main__":

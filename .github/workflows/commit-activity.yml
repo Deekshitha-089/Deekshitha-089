@@ -1,4 +1,5 @@
-name: Update Commit Activity Graph
+
+name: Update and Deploy Contribution Dashboard
 
 on:
   schedule:
@@ -12,10 +13,20 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: contribution-dashboard
+  cancel-in-progress: false
 
 jobs:
-  update-graph:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -28,16 +39,34 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generate commit graph
+      - name: Generate contribution data and SVG
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: Deekshitha-089
         run: python scripts/generate_commit_graph.py
 
-      - name: Commit and push graph
+      - name: Commit generated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/commit-activity.svg
-          git diff --cached --quiet || git commit -m "Update commit activity graph"
-          git push
+
+          git add assets/commit-activity.svg docs/contributions.json
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update contribution dashboard data"
+            git push origin HEAD:main
+          else
+            echo "No generated data changes to commit."
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload dashboard
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4
